@@ -26,7 +26,8 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda$CONDA_PYTHON_VERS
     rm -rf /tmp/* && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-#RUN echo “. /opt/conda/etc/profile.d/conda.sh” >> ~/.bashrc && echo “conda activate base” >> ~/.bashrc
+
+
 #get openpose
 WORKDIR /docker_debugv1
 RUN git clone https://github.com/ajisetyoko/docker_debugv1.git .
@@ -38,11 +39,9 @@ RUN conda update -n base -c defaults conda && \
 
 # You can add the new created environment to the path
 WORKDIR /docker_debugv1/torchlight
-RUN activate gcn
+ENV PATH /opt/conda/envs/gcn/bin:$PATH
+WORKDIR /docker_debugv1/torchlight
 RUN python setup.py install
-#ENV PATH /opt/conda/envs/gpuenvs/bin:$PATH
-# Copy the files in the actual directory from the directory forDocker on our host into the container in the directory /testenv
-COPY . /testenv
 
 # Set the working directory to be /testenv
-WORKDIR /testenv
+WORKDIR /docker_debugv1
